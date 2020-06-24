@@ -20,11 +20,14 @@ public class Project {
         return id;
     }
 
+    public Project() {
+    }
+
     void setId(int id) {
         this.id = id;
     }
 
-    Set<ProjectStep> getSteps() {
+    public Set<ProjectStep> getSteps() {
         return steps;
     }
 

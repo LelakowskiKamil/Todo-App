@@ -25,11 +25,11 @@ public class TaskGroup {
     public TaskGroup() {
     }
 
-    Project getProject() {
+    public Project getProject() {
         return project;
     }
 
-    void setProject(Project project) {
+    public void setProject(Project project) {
         this.project = project;
     }
 
@@ -37,7 +37,7 @@ public class TaskGroup {
         return id;
     }
 
-    public void setId(int id) {
+    void setId(int id) {
         this.id = id;
     }
 
