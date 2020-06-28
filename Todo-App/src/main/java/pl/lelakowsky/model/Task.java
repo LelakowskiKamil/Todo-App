@@ -18,16 +18,22 @@ public class Task {
     @Embedded
     private Audit audit = new Audit();
     @ManyToOne
-    @JoinColumn(name = "task_group_id")
+    @JoinColumn(name = "TASK_GROUP_ID")
     private TaskGroup group;
     public Task() {
 
     }
     public Task(String description, LocalDateTime deadline){
-        this.description=description;
-        this.deadline=deadline;
+        this(description,deadline,null);
     }
 
+    public Task(String description, LocalDateTime deadline, TaskGroup group){
+        this.description=description;
+        this.deadline=deadline;
+        if (group!= null){
+            this.group=group;
+        }
+    }
     public LocalDateTime getDeadline() {
         return deadline;
     }

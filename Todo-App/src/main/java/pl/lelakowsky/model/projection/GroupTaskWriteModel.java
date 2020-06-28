@@ -1,6 +1,7 @@
 package pl.lelakowsky.model.projection;
 
 import pl.lelakowsky.model.Task;
+import pl.lelakowsky.model.TaskGroup;
 
 import java.time.LocalDateTime;
 
@@ -9,8 +10,8 @@ public class GroupTaskWriteModel {
     private String description;
     private LocalDateTime deadline;
 
-    Task toTask(){
-        return new Task(description,deadline);
+    Task toTask(final TaskGroup group){
+        return new Task(description,deadline, group);
     }
 
     public String getDescription() {

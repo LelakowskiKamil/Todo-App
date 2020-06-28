@@ -21,7 +21,7 @@ class ProjectServiceTest {
 
     @Test
     @DisplayName("should throw IllegalStateException when configured to allow just 1 group and other undone group exists")
-    void createGroup_noMultipleGroupsConfig_and_udoneGroupExists_throwsIllegalStateExceptions() {
+    void createGroup_noMultipleGroupsConfig_and_undoneGroupExists_throwsIllegalStateExceptions() {
         //given
         TaskGroupRepository mockGroupRepository = groupRepositoryReturning(true);
 
@@ -29,7 +29,7 @@ class ProjectServiceTest {
 
         //when
 
-        var toTest = new ProjectService(null,mockGroupRepository,mockConfig);
+        var toTest = new ProjectService(null,mockGroupRepository,null,mockConfig);
 
         //when
         var exception = catchThrowable(() ->toTest.createGroup(LocalDateTime.now(), 0));
@@ -43,6 +43,10 @@ class ProjectServiceTest {
 
         }
 
+        private TaskGroupService dummyGroupService(final InMemoryGroupRepository inMemoryGroupRepository){
+        return new TaskGroupService(inMemoryGroupRepository,null);
+        }
+
     @Test
     @DisplayName("should throw IllegalStateException when configuration ok and no projects for a given id")
     void createGroup_configurationOk_And_noProjects_throwsIllegalArgumentExceptions() {
@@ -52,7 +56,7 @@ class ProjectServiceTest {
 
         TaskConfigurationProperties mockConfig = configurationReturning(true);
 
-        var toTest = new ProjectService(mockRepository,null,mockConfig);
+        var toTest = new ProjectService(mockRepository,null,null,mockConfig);
 
         //when
         var exception = catchThrowable(() ->toTest.createGroup(LocalDateTime.now(), 0));
@@ -84,7 +88,7 @@ class ProjectServiceTest {
 
         TaskConfigurationProperties mockConfig = configurationReturning(true);
 
-        var toTest = new ProjectService(mockRepository,mockGroupRepository,mockConfig);
+        var toTest = new ProjectService(mockRepository,mockGroupRepository,null,mockConfig);
 
         //when
         var exception = catchThrowable(() ->toTest.createGroup(LocalDateTime.now(), 0));
@@ -114,10 +118,11 @@ class ProjectServiceTest {
                 .thenReturn(Optional.of(project));
 
         InMemoryGroupRepository inMemoryGroupRepo = new InMemoryGroupRepository();
+        var serviceWithInMemoryRepo = dummyGroupService(inMemoryGroupRepo);
 int countBeforeCall = inMemoryGroupRepo.count();
         TaskConfigurationProperties mockConfig = configurationReturning(true);
 
-        var toTest = new ProjectService(mockRepository,inMemoryGroupRepo,mockConfig);
+        var toTest = new ProjectService(mockRepository,inMemoryGroupRepo,serviceWithInMemoryRepo,mockConfig);
 
         GroupReadModel result = toTest.createGroup(today,1);
 
@@ -173,7 +178,7 @@ int countBeforeCall = inMemoryGroupRepo.count();
                 try {
                    var field = TaskGroup.class.getDeclaredField("id");
                    field.setAccessible(true);
-                           field.set(entity, ++index);
+                   field.set(entity, ++index);
                 } catch (NoSuchFieldException | IllegalAccessException e) {
                     throw new RuntimeException(e);
                 }
