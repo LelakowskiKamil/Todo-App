@@ -2,17 +2,14 @@ package pl.lelakowsky.logic;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import pl.lelakowsky.TaskConfigurationProperties;
 import pl.lelakowsky.model.TaskGroup;
 import pl.lelakowsky.model.TaskGroupRepository;
 import pl.lelakowsky.model.TaskRepository;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -25,7 +22,7 @@ class TaskGroupServiceTest {
         TaskRepository mockTaskRepository = taskRepositoryReturning(true);
 
         var toTest = new TaskGroupService(null,mockTaskRepository);
-       var exception =  catchThrowable(() ->toTest.ToggleGroup(1));
+       var exception =  catchThrowable(() ->toTest.toggleGroup(1));
        assertThat(exception)
                .isInstanceOf(IllegalStateException.class)
                .hasMessageContaining("undone tasks");
@@ -46,7 +43,7 @@ class TaskGroupServiceTest {
         when(mockRepository.findById(anyInt())).thenReturn(Optional.empty());
 
         var toTest = new TaskGroupService(mockRepository,mockTaskRepository);
-        var exception =  catchThrowable(() ->toTest.ToggleGroup(1));
+        var exception =  catchThrowable(() ->toTest.toggleGroup(1));
         assertThat(exception)
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("not found");
@@ -62,7 +59,7 @@ var beforeToggle=group.isDone();
         when(mockRepository.findById(anyInt())).thenReturn(Optional.of(group));
 
         var toTest = new TaskGroupService(mockRepository,mockTaskRepository);
-        toTest.ToggleGroup(0);
+        toTest.toggleGroup(0);
         assertThat(group.isDone()).isEqualTo(!beforeToggle);
     }
 }

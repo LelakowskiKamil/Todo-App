@@ -12,10 +12,12 @@ import java.util.Optional;
 @Qualifier(value="sqlTaskRepository")
 public interface TaskRepository {
     List<Task> findAll();
+    Page<Task> findAll(Pageable page);
     Optional<Task> findById(Integer id);
-    Task save(Task entity);
-Page<Task> findAll(Pageable page);
-    List<Task> findByDone(@Param("state") boolean done);
-    boolean existsByDoneIsFalseAndGroup_Id(Integer groupId);
     boolean existsById(Integer id);
+    boolean existsByDoneIsFalseAndGroup_Id(Integer groupId);
+    List<Task> findByDone(@Param("state") boolean done);
+    Task save(Task entity);
+
+    List<Task> findAllByGroupId(Integer groupId);
 }

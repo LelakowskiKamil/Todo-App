@@ -18,7 +18,7 @@ public class Task {
     @Embedded
     private Audit audit = new Audit();
     @ManyToOne
-    @JoinColumn(name = "TASK_GROUP_ID")
+    @JoinColumn(name = "task_group_id")
     private TaskGroup group;
     public Task() {
 
@@ -77,7 +77,7 @@ public class Task {
         this.audit = audit;
     }
 
-    public TaskGroup getGroup() {
+    TaskGroup getGroup() {
         return group;
     }
 

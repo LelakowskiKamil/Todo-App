@@ -3,6 +3,7 @@ package pl.lelakowsky;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -43,6 +44,11 @@ class TestConfiguration {
             @Override
             public boolean existsById(final Integer id) {
                 return tasks.containsKey(id);
+            }
+
+            @Override
+            public List<Task> findAllByGroupId(Integer groupId) {
+                return List.of();
             }
 
             @Override
