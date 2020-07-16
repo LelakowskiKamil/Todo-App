@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.RequestScope;
 import pl.lelakowsky.TaskConfigurationProperties;
+import pl.lelakowsky.model.Project;
 import pl.lelakowsky.model.TaskGroup;
 import pl.lelakowsky.model.TaskGroupRepository;
 import pl.lelakowsky.model.TaskRepository;
@@ -28,7 +29,11 @@ public class TaskGroupService {
     }
 
     public GroupReadModel createGroup(GroupWriteModel source) {
-        TaskGroup result = repository.save(source.toGroup());
+        return createGroup(source,null);
+    }
+
+    GroupReadModel createGroup(final GroupWriteModel source, final Project project) {
+        TaskGroup result = repository.save(source.toGroup(project));
         return new GroupReadModel(result);
     }
 
