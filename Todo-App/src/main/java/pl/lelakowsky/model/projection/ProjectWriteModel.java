@@ -5,6 +5,7 @@ import pl.lelakowsky.model.ProjectStep;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -13,8 +14,12 @@ public class ProjectWriteModel {
 
     @NotBlank(message = "Project's description must be not null")
     private String description;
-@Valid
-    private List<ProjectStep> steps;
+    @Valid
+    private List<ProjectStep> steps = new ArrayList<>();
+
+    public ProjectWriteModel() {
+        steps.add(new ProjectStep());
+    }
 
     public String getDescription() {
         return description;
@@ -32,7 +37,7 @@ public class ProjectWriteModel {
         this.steps = steps;
     }
 
-    public Project toProject(){
+    public Project toProject() {
         var result = new Project();
         result.setDescription(description);
         steps.forEach(step -> step.setProject(result));
