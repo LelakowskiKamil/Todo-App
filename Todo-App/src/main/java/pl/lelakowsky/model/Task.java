@@ -1,17 +1,23 @@
 package pl.lelakowsky.model;
 
-import javax.persistence.*;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tasks")
 public class Task {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    @NotBlank(message = "Task's description must be not null")
+    @NotBlank(message = "Task's description must not be empty")
     private String description;
     private boolean done;
     private LocalDateTime deadline;
@@ -20,34 +26,27 @@ public class Task {
     @ManyToOne
     @JoinColumn(name = "task_group_id")
     private TaskGroup group;
-    public Task() {
 
-    }
-    public Task(String description, LocalDateTime deadline){
-        this(description,deadline,null);
+    Task() {
     }
 
-    public Task(String description, LocalDateTime deadline, TaskGroup group){
-        this.description=description;
-        this.deadline=deadline;
-        if (group!= null){
-            this.group=group;
-        }
-    }
-    public LocalDateTime getDeadline() {
-        return deadline;
+    public Task(String description, LocalDateTime deadline) {
+        this(description, deadline, null);
     }
 
-    public void setDeadline(LocalDateTime deadline) {
+    public Task(String description, LocalDateTime deadline, TaskGroup group) {
+        this.description = description;
         this.deadline = deadline;
+        if (group != null) {
+            this.group = group;
+        }
     }
 
     public int getId() {
         return id;
     }
 
-
-    public void setId(int id) {
+    void setId(final int id) {
         this.id = id;
     }
 
@@ -55,7 +54,7 @@ public class Task {
         return description;
     }
 
-    void setDescription(String description) {
+    void setDescription(final String description) {
         this.description = description;
     }
 
@@ -63,25 +62,23 @@ public class Task {
         return done;
     }
 
-    public void setDone(boolean done) {
+    public void setDone(final boolean done) {
         this.done = done;
     }
 
-
-
-    public Audit getAudit() {
-        return audit;
+    public LocalDateTime getDeadline() {
+        return deadline;
     }
 
-    public void setAudit(Audit audit) {
-        this.audit = audit;
+    void setDeadline(final LocalDateTime deadline) {
+        this.deadline = deadline;
     }
 
     TaskGroup getGroup() {
         return group;
     }
 
-    public void setGroup(TaskGroup group) {
+    void setGroup(final TaskGroup group) {
         this.group = group;
     }
 
@@ -89,6 +86,6 @@ public class Task {
         description = source.description;
         done = source.done;
         deadline = source.deadline;
-        group=source.group;
+        group = source.group;
     }
 }

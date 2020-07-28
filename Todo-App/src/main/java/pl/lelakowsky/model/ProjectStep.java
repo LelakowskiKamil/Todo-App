@@ -1,22 +1,26 @@
 package pl.lelakowsky.model;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "project_steps")
 public class ProjectStep {
-    @ManyToOne
-    @JoinColumn(name = "project_id")
-    private Project project;
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    @NotBlank(message = "Project step's description must be not null")
+    @NotBlank(message = "Project step's description must not be empty")
     private String description;
-
     private int daysToDeadline;
+    @ManyToOne
+    @JoinColumn(name = "project_id")
+    private Project project;
 
     public int getId() {
         return id;

@@ -1,9 +1,9 @@
 package pl.lelakowsky.logic;
 
-
-import org.springframework.stereotype.Service;
 import pl.lelakowsky.TaskConfigurationProperties;
-import pl.lelakowsky.model.*;
+import pl.lelakowsky.model.Project;
+import pl.lelakowsky.model.ProjectRepository;
+import pl.lelakowsky.model.TaskGroupRepository;
 import pl.lelakowsky.model.projection.GroupReadModel;
 import pl.lelakowsky.model.projection.GroupTaskWriteModel;
 import pl.lelakowsky.model.projection.GroupWriteModel;
@@ -13,14 +13,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
 public class ProjectService {
     private ProjectRepository repository;
     private TaskGroupRepository taskGroupRepository;
     private TaskGroupService taskGroupService;
     private TaskConfigurationProperties config;
 
-    public ProjectService(ProjectRepository repository, TaskGroupRepository taskGroupRepository,  TaskGroupService taskGroupService,TaskConfigurationProperties config) {
+    public ProjectService(final ProjectRepository repository, final TaskGroupRepository taskGroupRepository, final TaskGroupService taskGroupService, final TaskConfigurationProperties config) {
         this.repository = repository;
         this.taskGroupRepository = taskGroupRepository;
         this.taskGroupService = taskGroupService;
@@ -29,11 +28,10 @@ public class ProjectService {
 
     public List<Project> readAll() {
         return repository.findAll();
-
     }
 
     public Project save(final ProjectWriteModel toSave) {
-        return repository.save(toSave.toProject(    ));
+        return repository.save(toSave.toProject());
     }
 
     public GroupReadModel createGroup(LocalDateTime deadline, int projectId) {
@@ -53,9 +51,8 @@ public class ProjectService {
                                                 return task;
                                             }
                                     ).collect(Collectors.toList())
-
                     );
-                    return taskGroupService.createGroup(targetGroup,project);
+                    return taskGroupService.createGroup(targetGroup, project);
                 }).orElseThrow(() -> new IllegalArgumentException("Project with given id not found"));
     }
 }

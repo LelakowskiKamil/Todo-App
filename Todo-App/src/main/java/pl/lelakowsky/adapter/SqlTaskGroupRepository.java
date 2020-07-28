@@ -9,8 +9,7 @@ import pl.lelakowsky.model.TaskGroupRepository;
 import java.util.List;
 
 @Repository
-interface SqlTaskGroupRepository extends TaskGroupRepository, JpaRepository<TaskGroup,Integer> {
-
+interface SqlTaskGroupRepository extends TaskGroupRepository, JpaRepository<TaskGroup, Integer> {
     @Override
     @Query("select distinct g from TaskGroup g join fetch g.tasks")
     List<TaskGroup> findAll();

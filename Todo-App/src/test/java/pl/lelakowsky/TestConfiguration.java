@@ -46,10 +46,6 @@ class TestConfiguration {
                 return tasks.containsKey(id);
             }
 
-            @Override
-            public List<Task> findAllByGroupId(Integer groupId) {
-                return List.of();
-            }
 
             @Override
             public boolean existsByDoneIsFalseAndGroup_Id(final Integer groupId) {
@@ -74,6 +70,11 @@ class TestConfiguration {
                 tasks.put(key, entity);
                 return tasks.get(key);
 
+            }
+
+            @Override
+            public List<Task> findAllByGroup_Id(Integer groupId) {
+                return List.of();
             }
         };
     }

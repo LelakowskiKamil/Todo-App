@@ -1,12 +1,6 @@
 package pl.lelakowsky.logic;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Service;
-import org.springframework.web.context.annotation.RequestScope;
-import pl.lelakowsky.TaskConfigurationProperties;
+
 import pl.lelakowsky.model.Project;
 import pl.lelakowsky.model.TaskGroup;
 import pl.lelakowsky.model.TaskGroupRepository;
@@ -17,19 +11,17 @@ import pl.lelakowsky.model.projection.GroupWriteModel;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
-@RequestScope
 public class TaskGroupService {
     private TaskGroupRepository repository;
     private TaskRepository taskRepository;
 
-    public TaskGroupService(TaskGroupRepository repository, @Qualifier("sqlTaskRepository") TaskRepository taskRepository) {
+    TaskGroupService(final TaskGroupRepository repository, final TaskRepository taskRepository) {
         this.repository = repository;
         this.taskRepository = taskRepository;
     }
 
-    public GroupReadModel createGroup(GroupWriteModel source) {
-        return createGroup(source,null);
+    public GroupReadModel createGroup(final GroupWriteModel source) {
+        return createGroup(source, null);
     }
 
     GroupReadModel createGroup(final GroupWriteModel source, final Project project) {
@@ -45,9 +37,10 @@ public class TaskGroupService {
 
     public void toggleGroup(int groupId) {
         if (taskRepository.existsByDoneIsFalseAndGroup_Id(groupId)) {
-            throw new IllegalStateException("Group has undone tasks, Done all the tasks first");
+            throw new IllegalStateException("Group has undone tasks. Done all the tasks first");
         }
-        TaskGroup result = repository.findById(groupId).orElseThrow(() -> new IllegalArgumentException("TaskGroup with given id not found"));
+        TaskGroup result = repository.findById(groupId)
+                .orElseThrow(() -> new IllegalArgumentException("TaskGroup with given id not found"));
         result.setDone(!result.isDone());
         repository.save(result);
     }
