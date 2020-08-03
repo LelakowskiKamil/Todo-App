@@ -1,5 +1,6 @@
 package pl.lelakowsky.controller;
 
+import io.micrometer.core.annotation.Timed;
 import pl.lelakowsky.logic.ProjectService;
 import pl.lelakowsky.model.Project;
 import pl.lelakowsky.model.ProjectStep;
@@ -55,6 +56,8 @@ class ProjectController {
         return "projects";
     }
 
+
+    @Timed(value = "project.create.group", histogram=true, percentiles = {0.5,0.95, 0.99})
     @PostMapping("/{id}")
     String createGroup(
             @ModelAttribute("project") ProjectWriteModel current,

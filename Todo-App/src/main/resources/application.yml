@@ -9,7 +9,7 @@ spring:
   main:
     banner-mode: off
   datasource:
-    url: 'jdbc:h2:file:C:\Users\Dell\Downloads\Todo-App-master\Todo-App\todo-db'
+    url: 'jdbc:h2:file:C:\Users\Dell\Downloads\Todo-App-master\Todo-App\todo-db;DB_CLOSE_ON_EXIT=FALSE;AUTO_SERVER=TRUE'
   jpa:
     hibernate:
       ddl-auto: validate
@@ -17,3 +17,4 @@ server:
   port: 8085
 
 task.template.allowMultipleTasks: false
+menagement.metrics.enable.http: false
