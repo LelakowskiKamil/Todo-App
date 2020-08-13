@@ -14,7 +14,13 @@ spring:
     hibernate:
       ddl-auto: validate
 server:
-  port: 8085
+  port: 8080
+
+keycloak:
+  auth-server-url: 'http://localhost:8180/auth'
+  realm: 'TodoApp'
+  resource: 'todo-spring-client'
+  public-client: true
 
 task.template.allowMultipleTasks: false
 menagement.metrics.enable.http: false

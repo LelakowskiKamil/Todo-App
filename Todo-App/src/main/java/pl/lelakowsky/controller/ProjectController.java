@@ -1,6 +1,8 @@
 package pl.lelakowsky.controller;
 
 import io.micrometer.core.annotation.Timed;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import pl.lelakowsky.logic.ProjectService;
 import pl.lelakowsky.model.Project;
 import pl.lelakowsky.model.ProjectStep;
@@ -16,10 +18,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
+@PreAuthorize("hasRole('ROLE_ADMIN')")
 @RequestMapping("/projects")
 class ProjectController {
     private final ProjectService service;
@@ -29,9 +33,12 @@ class ProjectController {
     }
 
     @GetMapping
-    String showProjects(Model model) {
-        model.addAttribute("project", new ProjectWriteModel());
+    String showProjects(Model model, Authentication auth) {
+     //  if (auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))){
+         model.addAttribute("project", new ProjectWriteModel());
         return "projects";
+    //   }
+    //   return "index";
     }
 
     @PostMapping

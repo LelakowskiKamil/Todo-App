@@ -1,6 +1,7 @@
 package pl.lelakowsky.controller;
 
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationEventPublisher;
 import pl.lelakowsky.model.Task;
 import pl.lelakowsky.model.TaskRepository;
 import org.slf4j.Logger;
@@ -26,9 +27,11 @@ import java.util.List;
 @RequestMapping("/tasks")
 class TaskController {
     private static final Logger logger = LoggerFactory.getLogger(TaskController.class);
+    private final ApplicationEventPublisher eventPublisher;
     private final TaskRepository repository;
 
-    TaskController(@Qualifier("sqlTaskRepository") final TaskRepository repository) {
+    TaskController(ApplicationEventPublisher eventPublisher, @Qualifier("sqlTaskRepository") final TaskRepository repository) {
+        this.eventPublisher = eventPublisher;
         this.repository = repository;
     }
 
@@ -84,7 +87,8 @@ class TaskController {
             return ResponseEntity.notFound().build();
         }
         repository.findById(id)
-                .ifPresent(task -> task.setDone(!task.isDone()));
+                .map(Task::toggle)
+                .ifPresent(eventPublisher::publishEvent);
         return ResponseEntity.noContent().build();
     }
 }
